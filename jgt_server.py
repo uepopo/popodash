@@ -53,7 +53,7 @@ def fetch_ip_info_bg():
         if "Fetching" not in PUBLIC_IP and "Unknown IP" not in PUBLIC_IP: break 
         for api in apis:
             try:
-                req = urllib.request.Request(api, headers={'User-Agent': 'Mozilla/5.0 (Roosterdash)'})
+                req = urllib.request.Request(api, headers={'User-Agent': 'Mozilla/5.0 (popodash)'})
                 with urllib.request.urlopen(req, timeout=5) as response:
                     data = json.loads(response.read().decode('utf-8'))
                     if 'ipwho' in api:
@@ -221,7 +221,7 @@ def generate_tg_report():
     rx_mb, tx_mb = get_daily_traffic()
     ssh_count, ssh_ips = get_ssh_logins_24h()
     p_name = global_conf.get('panel_name', 'Unnamed VPS')
-    msg = f"Roosterdash.com \n-----------------------\n🖥️ Host: {p_name}\n\nTraffic Today: In {rx_mb}MB | Out {tx_mb}MB\nSSH Logins (24h): {ssh_count} unique IPs\n{ssh_ips}\n\n"
+    msg = f"popodash.com \n-----------------------\n🖥️ Host: {p_name}\n\nTraffic Today: In {rx_mb}MB | Out {tx_mb}MB\nSSH Logins (24h): {ssh_count} unique IPs\n{ssh_ips}\n\n"
     mem_pct = round((sys_info.get('mem_used_mb') / sys_info.get('mem_total_mb')) * 100) if sys_info.get('mem_total_mb') else 0
     msg += f"System Status: {'Excellent!' if mem_pct < 85 else 'High load, please check!'}\n\n-----------------------\n"
     targets = [("Anchorage", "us.pool.ntp.org"), ("Vancouver", "ca.pool.ntp.org"), ("San Francisco", "sfo-ca-us-ping.vultr.com"), ("Frankfurt", "fra-de-ping.vultr.com"), ("Singapore", "sgp-ping.vultr.com"), ("Hong Kong", "hkg-hi-ping.vultr.com"), ("Tokyo", "hnd-jp-ping.vultr.com"), ("Sydney", "syd-au-ping.vultr.com")]
@@ -341,7 +341,7 @@ class API(BaseHTTPRequestHandler):
             self.serve_file('index.html'); return
         elif self.path == '/api/config':
             self.send_response(200); self.send_header('Content-type', 'application/json'); self.end_headers()
-            self.wfile.write(json.dumps({"status": "success", "panel_name": global_conf.get('panel_name', 'Roosterdash'), "panel_avatar": global_conf.get('panel_avatar', 'https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png')}).encode('utf-8')); return
+            self.wfile.write(json.dumps({"status": "success", "panel_name": global_conf.get('panel_name', 'popodash'), "panel_avatar": global_conf.get('panel_avatar', 'https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png')}).encode('utf-8')); return
         elif self.path == '/api/tg_config':
             if not self.check_auth(): self.send_response(401); self.end_headers(); return
             self.send_response(200); self.send_header('Content-type', 'application/json'); self.end_headers()
