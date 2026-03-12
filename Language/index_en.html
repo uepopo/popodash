@@ -1781,18 +1781,28 @@ let isFrRunning = false; let frAbortController = null;
         }).catch(error => console.log('Uplink lost.'));
   }
 
-  window.copyInstallCmd = function() { const text = `bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')`; const el = document.createElement('textarea'); el.value = text; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); document.querySelectorAll('.install-title').forEach(tl => { tl.style.color = '#111'; tl.innerText = 'Copied to clipboard! ✓'; setTimeout(() => { tl.style.color = '#666'; tl.innerText = '1-Click Install Script (Click to Copy)'; }, 2000); }); }
-
-  window.copyMtLog = function() {
-      const logBox = document.getElementById('mt-log');
-      if(!logBox) return;
+window.copyInstallCmd = function() { 
+      const text = `bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\\r')`;
+      
+      // 创建一个隐藏的文本域来执行复制动作
       const el = document.createElement('textarea');
-      el.value = logBox.innerText;
+      el.value = text;
       document.body.appendChild(el);
       el.select();
       document.execCommand('copy');
       document.body.removeChild(el);
-      mtPrint("Terminal logs copied to clipboard ✓", "#fff");
+      
+      // 界面交互反馈：让标题显示已复制，1.5秒后恢复
+      const titleEl = document.querySelector('.install-title');
+      if (titleEl) {
+          const originalText = titleEl.innerText;
+          titleEl.innerText = 'Copied!';
+          titleEl.style.color = '#111';
+          setTimeout(() => { 
+              titleEl.innerText = originalText; 
+              titleEl.style.color = '';
+          }, 1500);
+      }
   }
 </script>
 </body>
