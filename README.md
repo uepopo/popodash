@@ -37,7 +37,7 @@ The project was originally named "Roosterdash," but I renamed it after realizing
 <p><b>One-Click Installation Script</b></p>
 
 ```bash
-bash <(curl -sL "https://raw.githubusercontent.com/jigongtou/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')
+bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')
 ```
 <br><br>
 I used port `2077` by default as a tribute to Cyberpunk 2077. You can change it if you want.
@@ -166,7 +166,7 @@ Even a small potato server deserves a beautiful soul. Have fun!
 <p><b>一键安装脚本</b></p>
 
 ```bash
-bash <(curl -sL "https://raw.githubusercontent.com/jigongtou/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')
+bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')
 ```
 <br><br>
 我默认使用了 `2077` 端口，向赛博朋克 2077 致敬，你也可以更改端口。
