@@ -22,7 +22,7 @@ The project was originally named "Roosterdash," but I renamed it after realizing
   <div style="width: 70%; height: 1px; background-image: linear-gradient(to right, transparent, #8e8e93 50%, transparent); background-size: 8px 1px; background-repeat: repeat-x;"></div>
 </div>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8ffc0ab7-b7f4-4b27-886f-d8bc6fa50126" 
+  <img src="https://github.com/uepopo/popodash/blob/main/README/show-001.gif" 
        width="300" 
        alt="popodash Demo GIF" 
        style="image-rendering: -webkit-optimize-contrast; 
@@ -56,7 +56,7 @@ After installation, the script will directly print out your access URL (IPv4 and
 <p><b>Features of popodash</b></p>
 <div align="center">
   <br>
-  <img width="800" alt="Dashboard View" src="https://github.com/user-attachments/assets/2313607d-3e8b-4f36-b5d0-31b968e8c3cc" style="pointer-events: none; user-select: none;">
+  <img width="800" alt="Dashboard View" src="https://github.com/uepopo/popodash/blob/main/README/show-002.png" style="pointer-events: none; user-select: none;">
   <br><br>
 </div>
 
@@ -112,7 +112,7 @@ My daily development routine looked like this:
   <div style="width: 70%; height: 1px; background-image: linear-gradient(to right, transparent, #8e8e93 50%, transparent); background-size: 8px 1px; background-repeat: repeat-x;"></div>
 </div>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/e7f5836a-0ec4-475c-8e83-4ef060ebc7ad" 
+  <img src="https://github.com/uepopo/popodash/blob/main/README/show-003.gif" 
        width="800" 
        alt="popodash Demo GIF" 
        style="image-rendering: -webkit-optimize-contrast; 
@@ -155,7 +155,7 @@ Even a small potato server deserves a beautiful soul. Have fun!
   <div style="width: 70%; height: 1px; background-image: linear-gradient(to right, transparent, #8e8e93 50%, transparent); background-size: 8px 1px; background-repeat: repeat-x;"></div>
 </div>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8ffc0ab7-b7f4-4b27-886f-d8bc6fa50126" 
+  <img src="https://github.com/uepopo/popodash/blob/main/README/show-001.gif" 
        width="300" 
        alt="popodash Demo GIF" 
        style="image-rendering: -webkit-optimize-contrast; 
@@ -189,7 +189,7 @@ bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.
 <p><b>鸡公头极简 VPS 面板 的功能特性</b></p>
 <div align="center">
   <br>
-  <img width="800" alt="Dashboard View" src="https://github.com/user-attachments/assets/2313607d-3e8b-4f36-b5d0-31b968e8c3cc" style="pointer-events: none; user-select: none;">
+  <img width="800" alt="Dashboard View" src="https://github.com/uepopo/popodash/blob/main/README/show-002.png" style="pointer-events: none; user-select: none;">
   <br><br>
 </div>
 
@@ -247,7 +247,7 @@ VPS的 CPU 跑满了或内存快爆了，后台会实时监控，并在 UI 页�
 
 軽量で、ちょっとサイバーパンクなVPSパネルです。NAT環境や純IPv6、128MBの極小VPSにも対応し、ワンクリックで美しいモニタリング画面を手に入れられます。
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8ffc0ab7-b7f4-4b27-886f-d8bc6fa50126" 
+  <img src="https://github.com/uepopo/popodash/blob/main/README/show-001.gif" 
        width="300" 
        alt="popodash Demo GIF" 
        style="pointer-events: none; user-select: none;">
