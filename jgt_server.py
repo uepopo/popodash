@@ -77,6 +77,33 @@ sys_lock = threading.Lock()
 last_cpu_stats = {}
 _sys_cache = {'events': {'time': 0, 'data': []}, 'processes': {'time': 0, 'data': []}}
 
+# ==========================
+# 【修复1】自动识别网卡名称
+# 原来写死 eth0/ens3/ens4，很多 VPS 网卡叫其他名字会导致流量显示为 0
+# 现在改为：跳过 lo（本地回环），自动找第一块真实网卡
+# ==========================
+def get_main_iface():
+    """自动找到流量最大的那块网卡（排除 lo 本地回环）"""
+    best_iface = None
+    best_bytes = -1
+    try:
+        with open('/proc/net/dev', 'r') as f:
+            for line in f:
+                if ':' not in line:
+                    continue
+                iface = line.split(':')[0].strip()
+                if iface == 'lo':
+                    continue
+                parts = line.split(':')[1].split()
+                if len(parts) >= 9:
+                    total = int(parts[0]) + int(parts[8])
+                    if total > best_bytes:
+                        best_bytes = total
+                        best_iface = iface
+    except:
+        pass
+    return best_iface
+
 def get_recent_ssh_logs():
     logs = []
     try:
@@ -117,13 +144,16 @@ def get_sys_info():
         mem_free = mem.get('MemAvailable', mem.get('MemFree', 0)) // 1024
         swap_total, swap_free = mem.get('SwapTotal', 0) // 1024, mem.get('SwapFree', 0) // 1024
         
+        # 【修复1应用】用自动识别的网卡名，不再写死
         net_rx, net_tx, disk_r, disk_w = 0, 0, 0, 0
         try:
-            with open('/proc/net/dev', 'r') as f:
-                for line in f:
-                    if 'eth0' in line or 'ens3' in line or 'ens4' in line:
-                        parts = line.split(':')[1].split()
-                        net_rx, net_tx = int(parts[0]), int(parts[8]); break
+            iface = get_main_iface()
+            if iface:
+                with open('/proc/net/dev', 'r') as f:
+                    for line in f:
+                        if line.split(':')[0].strip() == iface:
+                            parts = line.split(':')[1].split()
+                            net_rx, net_tx = int(parts[0]), int(parts[8]); break
         except: pass
         try:
             with open('/proc/diskstats', 'r') as f:
@@ -188,12 +218,15 @@ last_daily_rx, last_daily_tx = 0, 0
 def get_daily_traffic():
     global last_daily_rx, last_daily_tx
     rx, tx = 0, 0
+    # 【修复1应用】同样用自动识别网卡
     try:
-        with open('/proc/net/dev', 'r') as f:
-            for line in f:
-                if 'eth0' in line or 'ens3' in line or 'ens4' in line:
-                    parts = line.split(':')[1].split()
-                    rx, tx = int(parts[0]), int(parts[8]); break
+        iface = get_main_iface()
+        if iface:
+            with open('/proc/net/dev', 'r') as f:
+                for line in f:
+                    if line.split(':')[0].strip() == iface:
+                        parts = line.split(':')[1].split()
+                        rx, tx = int(parts[0]), int(parts[8]); break
     except: pass
     diff_rx = max(0, rx - last_daily_rx) if last_daily_rx > 0 else 0
     diff_tx = max(0, tx - last_daily_tx) if last_daily_tx > 0 else 0
@@ -243,6 +276,11 @@ def generate_tg_report():
     msg += f"Host IP: {masked_ip}\n" + "\n".join(ping_results)
     return msg
 
+# ==========================
+# 【修复2】Telegram 定时推送：支持用户自定义时区偏移
+# 配置里新增 tg_tz_offset 字段（默认 0 = UTC）
+# 例如北京时间设 8，纽约冬令时设 -5
+# ==========================
 def tg_daily_reporter():
     global global_conf
     time.sleep(10); get_daily_traffic(); last_sent_date = None
@@ -251,13 +289,49 @@ def tg_daily_reporter():
         token = global_conf.get('tg_token', ''); chat_id = global_conf.get('tg_chat_id', ''); push_time = global_conf.get('tg_push_time', '14:00')
         if token and chat_id:
             try:
-                now_utc = datetime.datetime.utcnow(); current_time_str = now_utc.strftime('%H:%M'); current_date_str = now_utc.strftime('%Y-%m-%d')
+                # 读取用户配置的时区偏移（小时），默认 0 = UTC
+                tz_offset = int(global_conf.get('tg_tz_offset', 0))
+                now_local = datetime.datetime.utcnow() + datetime.timedelta(hours=tz_offset)
+                current_time_str = now_local.strftime('%H:%M')
+                current_date_str = now_local.strftime('%Y-%m-%d')
                 if current_time_str == push_time and last_sent_date != current_date_str:
                     send_tg_message(token, chat_id, generate_tg_report())
                     last_sent_date = current_date_str
             except Exception as e: pass
 
 threading.Thread(target=tg_daily_reporter, daemon=True).start()
+
+# ==========================
+# 【修复3】登录接口加暴力破解保护
+# 同一个 IP 连续错误 5 次，锁定 5 分钟
+# ==========================
+_login_attempts = {}   # { ip: [timestamp, timestamp, ...] }
+_login_lock = threading.Lock()
+MAX_ATTEMPTS = 5       # 最多允许连续失败次数
+LOCKOUT_SECONDS = 300  # 锁定时长（秒）
+
+def check_login_rate(ip):
+    """返回 True 表示允许尝试，False 表示被锁定"""
+    now = time.time()
+    with _login_lock:
+        attempts = _login_attempts.get(ip, [])
+        # 清理 5 分钟以前的记录
+        attempts = [t for t in attempts if now - t < LOCKOUT_SECONDS]
+        _login_attempts[ip] = attempts
+        if len(attempts) >= MAX_ATTEMPTS:
+            return False
+        return True
+
+def record_login_fail(ip):
+    now = time.time()
+    with _login_lock:
+        attempts = _login_attempts.get(ip, [])
+        attempts.append(now)
+        _login_attempts[ip] = attempts
+
+def clear_login_fail(ip):
+    with _login_lock:
+        _login_attempts.pop(ip, None)
 
 class API(BaseHTTPRequestHandler):
     def log_message(self, format, *args): pass 
@@ -269,11 +343,19 @@ class API(BaseHTTPRequestHandler):
         
         if self.path == '/api/login':
             try:
+                # 【修复3应用】先检查是否被锁定
+                client_ip = self.client_address[0]
+                if not check_login_rate(client_ip):
+                    self.send_response(429); self.send_header('Content-type', 'application/json'); self.end_headers()
+                    self.wfile.write(json.dumps({"status": "fail", "msg": "Too many attempts, please wait 5 minutes."}).encode('utf-8'))
+                    return
                 body = json.loads(self.rfile.read(length).decode('utf-8'))
                 if body.get('username') == VALID_USER and body.get('password') == VALID_PASS:
+                    clear_login_fail(client_ip)
                     self.send_response(200); self.send_header('Content-type', 'application/json'); self.end_headers()
                     self.wfile.write(json.dumps({"status": "success", "token": AUTH_TOKEN}).encode('utf-8'))
                 else:
+                    record_login_fail(client_ip)
                     self.send_response(401); self.end_headers(); self.wfile.write(json.dumps({"status": "fail"}).encode('utf-8'))
             except: self.send_response(400); self.end_headers()
 
@@ -289,6 +371,10 @@ class API(BaseHTTPRequestHandler):
                 if 'tg_token' in body: global_conf['tg_token'] = body.get('tg_token')
                 if 'tg_chat_id' in body: global_conf['tg_chat_id'] = body.get('tg_chat_id')
                 if 'tg_push_time' in body: global_conf['tg_push_time'] = body.get('tg_push_time')
+                # 【修复2应用】保存时区偏移
+                if 'tg_tz_offset' in body:
+                    try: global_conf['tg_tz_offset'] = int(body.get('tg_tz_offset', 0))
+                    except: global_conf['tg_tz_offset'] = 0
                 with open('jgt_config.json', 'w') as f: json.dump(global_conf, f)
                 self.send_response(200); self.send_header('Content-type', 'application/json'); self.end_headers()
                 self.wfile.write(json.dumps({"status": "success"}).encode('utf-8'))
@@ -345,7 +431,8 @@ class API(BaseHTTPRequestHandler):
         elif self.path == '/api/tg_config':
             if not self.check_auth(): self.send_response(401); self.end_headers(); return
             self.send_response(200); self.send_header('Content-type', 'application/json'); self.end_headers()
-            self.wfile.write(json.dumps({"status": "success", "tg_token": global_conf.get('tg_token', ''), "tg_chat_id": global_conf.get('tg_chat_id', ''), "tg_push_time": global_conf.get('tg_push_time', '14:00')}).encode('utf-8')); return
+            # 【修复2应用】同时返回时区偏移给前端
+            self.wfile.write(json.dumps({"status": "success", "tg_token": global_conf.get('tg_token', ''), "tg_chat_id": global_conf.get('tg_chat_id', ''), "tg_push_time": global_conf.get('tg_push_time', '14:00'), "tg_tz_offset": global_conf.get('tg_tz_offset', 0)}).encode('utf-8')); return
         elif self.path == '/api':
             if not self.check_auth(): self.send_response(401); self.end_headers(); return
             self.send_response(200); self.send_header('Content-type', 'application/json'); self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate'); self.end_headers()
