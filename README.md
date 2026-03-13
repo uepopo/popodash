@@ -168,6 +168,7 @@ Even a small potato server deserves a beautiful soul. Have fun!
 </div>
 
 <p><b>一键安装脚本</b></p>
+
 ```bash
 bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\r')
 ```
