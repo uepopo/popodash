@@ -420,7 +420,7 @@
 <body>
 
 <div id="view-login" class="app-container login-container active-view-flex">
-  <div class="header"><div class="header-left"><div class="icon-box"><img src="https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png" alt="LOGO"></div><h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v0.1</p></div></div>
+  <div class="header"><div class="header-left"><div class="icon-box"><img src="https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png" alt="LOGO"></div><h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v1.300</p></div></div>
   <div class="slogan">放置VPSのためのサイバートイ</div>
   <div class="login-body">
     <div class="input-group"><input type="text" id="username" placeholder="ユーザー名 (デフォルト: admin)"></div>
@@ -440,7 +440,7 @@
 </div>
 
 <div id="view-fail" class="app-container login-container">
-    <div class="header"><div class="header-left"><div class="icon-box"><img src="https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png" alt="LOGO"></div><h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v0.1</p></div></div>
+    <div class="header"><div class="header-left"><div class="icon-box"><img src="https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png" alt="LOGO"></div><h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v1.300</p></div></div>
     <div class="slogan">放置VPSのためのサイバートイ</div>
     <div class="login-body">
       <div class="spinner"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g class="spinner_g" fill="#111"><path d="M11 2h2v5h-2z" opacity=".14"/><path d="M11 17h2v5h-2z" opacity=".86"/><path d="M17 11h5v2h-5z" opacity=".29"/><path d="M2 11h5v2H2z" opacity="1"/><path d="M15.536 4.929l1.414-1.414 3.536 3.536-1.414 1.414z" opacity=".21"/><path d="M3.536 15.536l1.414-1.414 3.536 3.536-1.414 1.414z" opacity=".71"/><path d="M15.536 19.071l3.536-3.536 1.414 1.414-3.536 3.536z" opacity=".43"/><path d="M3.536 8.464l3.536-3.536 1.414 1.414-3.536 3.536z" opacity=".57"/></g></svg></div>
@@ -508,7 +508,7 @@
           </div>
 
           <div class="net-io">
-            <span>eth0 受信: <span class="net-val" id="net-rx">0.00 M/s</span></span><span>送信: <span class="net-val" id="net-tx">0.00 M/s</span></span>
+            <span><span id="net-iface-label">net</span> 受信: <span class="net-val" id="net-rx">0.00 M/s</span></span><span>送信: <span class="net-val" id="net-tx">0.00 M/s</span></span>
           </div>
         </div>
       </div>
@@ -535,7 +535,7 @@
           <div class="icon-box" onclick="openSettings()" title="Settings">
             <img class="global-avatar-img" src="https://raw.githubusercontent.com/uepopo/popodash/main/img/logo/LOGO.png" alt="LOGO">
           </div>
-          <h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v0.1</p>
+          <h1 class="username global-panel-name">popodash</h1><p class="product-name">Minimalist VPS Dashboard</p><p class="version">popodash v1.300</p>
         </div>
         <div class="header-right">
           <div class="speech-bubble" id="boss-speech">
@@ -640,7 +640,7 @@
             <span style="color:#8e8e93;" id="mt-clock">00:00:00Z</span>
           </div>
           <div class="mt-log-container" id="mt-log">
-              <div class="mt-line" style="color:#fff;">popodash OS v0.1 (tty1)</div>
+              <div class="mt-line" style="color:#fff;">popodash OS v1.300 (tty1)</div>
               <div class="mt-line">サンドボックス・ターミナルへようこそ。</div>
               <div class="mt-line" style="color:#666; margin-top: 4px; margin-bottom: 4px;">[Sandbox] セキュリティ保護のため、ここは読み取り専用の隔離環境です。<br>すべてのコマンドは厳密な権限下で実行されます。安全に遊んでください。</div>
               <div class="mt-line">'help' と入力するか、下のショートカットを使用してください。</div>
@@ -681,7 +681,7 @@
         <div class="mt-divider"></div>
         
         <div class="mt-bottom-net">
-           <span>eth0 受信: <span id="mt-eth-rx">0.0 M/s</span></span>
+           <span><span id="mt-iface-label">net</span> 受信: <span id="mt-eth-rx">0.0 M/s</span></span>
            <span>送信: <span id="mt-eth-tx">0.0 M/s</span></span>
         </div>
     </div>
@@ -698,7 +698,7 @@
     </div>
     <div class="header-text-group">
       <h2 class="page-title">コンソール設定</h2>
-      <div class="version-bar">JGT-popodash V0.2 · Matrix Edition</div>
+      <div class="version-bar">popodash v1.300</div>
     </div>
   </div>
   
@@ -719,6 +719,7 @@
       <div class="form-group">
         <div class="input-row"><span class="input-label">Bot Token</span><input type="text" id="tg-token" class="input-box" placeholder="123456:ABC-DEF1234ghIkl-zyx" oninput="checkSettingsDirty()"></div>
         <div class="input-row"><span class="input-label">Chat ID</span><input type="text" id="tg-chat-id" class="input-box" placeholder="123456789" oninput="checkSettingsDirty()"></div>
+        <div class="input-row"><span class="input-label">タイムゾーン</span><input type="number" id="tg-tz-offset" class="input-box" placeholder="例: +9 東京 / +8 北京 / 0 UTC" min="-12" max="14" oninput="checkSettingsDirty()"></div>
         <div class="input-row" style="margin-top: 15px;">
             <div class="tg-test-group">
                 <input type="time" id="tg-push-time" oninput="checkSettingsDirty()" title="Daily Report Time(UTC)">
@@ -728,7 +729,7 @@
       </div>
     </div>
 
-    <p class="notice">ヒント: 14:00 UTC = 日本時間 23:00。<br>テストボタンをクリックするとグローバルPingテストが開始されレポートが送信されます。</p>
+    <p class="notice">プッシュ時刻はタイムゾーンオフセットで計算されます。東京は +9、空白のままにするとUTC (0) が使用されます。<br>テストボタンをクリックするとグローバルPingテストが開始されレポートが送信されます。</p>
     <div class="btn-group">
       <button class="btn btn-back" onclick="switchView('view-dashboard')">戻る</button>
       <button class="btn btn-save" id="btn-save-submit" onclick="saveSettings()">保存</button>
@@ -787,7 +788,7 @@
     const user = document.getElementById('username').value; const pass = document.getElementById('password').value; const btn = document.getElementById('btn-login-submit');
     if(!user || !pass) { return; }
     btn.innerText = '認証中...'; 
-    fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: user, password: pass }) }).then(res => res.json()).then(data => { btn.innerText = 'ログイン'; if (data.status === 'success') { localStorage.setItem('jgt_token', data.token); switchView('view-dashboard'); startDashboardLoop(); } else { switchView('view-fail'); } }).catch(() => { switchView('view-fail'); });
+    fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: user, password: pass }) }).then(res => { if(res.status === 429) { btn.innerText = 'ログイン'; const failDesc = document.querySelector('.fail-desc'); if(failDesc) failDesc.innerText = 'ログイン試行回数が多すぎます。5分後に再試行してください。'; switchView('view-fail'); throw new Error('rate limited'); } return res.json(); }).then(data => { btn.innerText = 'ログイン'; if (data.status === 'success') { localStorage.setItem('jgt_token', data.token); switchView('view-dashboard'); startDashboardLoop(); } else { const failDesc = document.querySelector('.fail-desc'); if(failDesc) failDesc.innerText = 'ユーザー名とパスワードを確認してもう一度お試しください。'; switchView('view-fail'); } }).catch((e) => { if(e.message !== 'rate limited') { btn.innerText = 'ログイン'; switchView('view-fail'); } });
   }
 
   window.doLogout = function() { localStorage.removeItem('jgt_token'); if(vpsInterval) clearInterval(vpsInterval); switchView('view-login'); }
@@ -801,6 +802,7 @@
               document.getElementById('tg-token').value = data.tg_token || ''; 
               document.getElementById('tg-chat-id').value = data.tg_chat_id || ''; 
               document.getElementById('tg-push-time').value = data.tg_push_time || '14:00'; 
+              document.getElementById('tg-tz-offset').value = data.tg_tz_offset !== undefined ? data.tg_tz_offset : '';
           }
       }).catch(e => console.log('TG config pull failed.'));
       document.getElementById('btn-save-submit').classList.remove('active');
@@ -848,6 +850,7 @@
       const tgToken = document.getElementById('tg-token').value; 
       const tgChatId = document.getElementById('tg-chat-id').value;
       const tgPushTime = document.getElementById('tg-push-time').value;
+      const tgTzOffset = document.getElementById('tg-tz-offset').value;
       
       const btn = document.getElementById('btn-save-submit'); const token = localStorage.getItem('jgt_token'); let fallbackName = "popodash"; 
       btn.innerText = '同期中...';
@@ -860,7 +863,8 @@
               panel_avatar: currentAvatarBase64, 
               tg_token: tgToken, 
               tg_chat_id: tgChatId,
-              tg_push_time: tgPushTime
+              tg_push_time: tgPushTime,
+              tg_tz_offset: tgTzOffset !== '' ? parseInt(tgTzOffset) : 0
           }) 
       }).then(res => res.json()).then(data => {
           if(data.status === 'success') { 
@@ -1140,7 +1144,7 @@
                               ████████████████████████████`;
                               
           const output = `<div style="font-size: 4px; font-family: monospace; line-height: 1; white-space: pre; color: #fff; margin-bottom: 10px;">${chickenLogo}</div>
-<span style="color:#fff">OS</span>: popodash v0.1
+<span style="color:#fff">OS</span>: popodash v1.300
 <span style="color:#fff">Kernel</span>: Linux 5.15.0-generic
 <span style="color:#fff">Uptime</span>: ${document.getElementById('uptime-val') ? document.getElementById('uptime-val').innerText : '0d'}
 <span style="color:#fff">Memory</span>: ${document.getElementById('ram-u') ? document.getElementById('ram-u').innerText : '0M'}`;
@@ -1740,6 +1744,7 @@ let isFrRunning = false; let frAbortController = null;
                }
                if(document.getElementById('net-rx')) document.getElementById('net-rx').innerText = (rxSpeed / 1024).toFixed(2) + ' M/s'; 
                if(document.getElementById('net-tx')) document.getElementById('net-tx').innerText = (txSpeed / 1024).toFixed(2) + ' M/s';
+               if(data.net_iface) { ['net-iface-label','mt-iface-label'].forEach(id => { const el = document.getElementById(id); if(el) el.innerText = data.net_iface; }); }
                
                if(document.getElementById('mt-eth-rx')) document.getElementById('mt-eth-rx').innerText = (rxSpeed / 1024).toFixed(2) + ' M/s'; 
                if(document.getElementById('mt-eth-tx')) document.getElementById('mt-eth-tx').innerText = (txSpeed / 1024).toFixed(2) + ' M/s'; 
@@ -1783,25 +1788,27 @@ let isFrRunning = false; let frAbortController = null;
 
 window.copyInstallCmd = function() { 
       const text = `bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\\r')`;
-      
-      // 创建一个隐藏的文本域来执行复制动作
-      const el = document.createElement('textarea');
-      el.value = text;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      
-      // 界面交互反馈：让标题显示已复制，1.5秒后恢复
       const titleEl = document.querySelector('.install-title');
-      if (titleEl) {
-          const originalText = titleEl.innerText;
-          titleEl.innerText = 'ターミナルのログをクリップボードにコピーしました ✓';
-          titleEl.style.color = '#111';
-          setTimeout(() => { 
-              titleEl.innerText = originalText; 
-              titleEl.style.color = '';
-          }, 1500);
+      function showFeedback() {
+          if (titleEl) {
+              const original = titleEl.innerText;
+              titleEl.innerText = 'クリップボードにコピーしました！';
+              titleEl.style.color = '#111';
+              setTimeout(() => { titleEl.innerText = original; titleEl.style.color = ''; }, 1500);
+          }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(showFeedback).catch(() => {
+              const el = document.createElement('textarea');
+              el.value = text; document.body.appendChild(el); el.select();
+              document.execCommand('copy'); document.body.removeChild(el);
+              showFeedback();
+          });
+      } else {
+          const el = document.createElement('textarea');
+          el.value = text; document.body.appendChild(el); el.select();
+          document.execCommand('copy'); document.body.removeChild(el);
+          showFeedback();
       }
   }
 </script>
