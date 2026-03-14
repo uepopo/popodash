@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 管道执行时 stdin 被占用，强制从终端读取用户输入
+exec </dev/tty
+
 # 确保脚本以 root 权限运行 (安装服务和依赖必须)
 if [ "$EUID" -ne 0 ]; then
   echo -e "\033[31mPlease run as root (请使用 root 权限或 sudo 运行此脚本)\033[0m"
@@ -60,19 +63,20 @@ print_banner() {
     echo -e "                              ████████████████████████████${RESET}"
     echo ""
     # 标版区域
-    echo -e "${BOLD}${WHITE}  ┌─────────────────────────────────────────────────────┐${RESET}"
-    echo -e "${BOLD}${WHITE}  │                                                     │${RESET}"
-    echo -e "${BOLD}${CYAN}  │        ██████  ██████  ██████  ██████                │${RESET}"
-    echo -e "${BOLD}${CYAN}  │        ██  ██  ██  ██  ██  ██  ██  ██                │${RESET}"
-    echo -e "${BOLD}${CYAN}  │        ██████  ██  ██  ██████  ██  ██  dash          │${RESET}"
-    echo -e "${BOLD}${CYAN}  │        ██      ██  ██  ██      ██  ██                │${RESET}"
-    echo -e "${BOLD}${CYAN}  │        ██      ██████  ██      ██████                │${RESET}"
-    echo -e "${BOLD}${WHITE}  │                                                     │${RESET}"
-    echo -e "${DIM}${WHITE}  │          Cyber Toy for Your Idle VPS                │${RESET}"
-    echo -e "${DIM}${WHITE}  │                   ·  ·  ·  ·  ·                     │${RESET}"
-    echo -e "${DIM}${CYAN}  │                      ${VERSION}                        │${RESET}"
-    echo -e "${BOLD}${WHITE}  │                                                     │${RESET}"
-    echo -e "${BOLD}${WHITE}  └─────────────────────────────────────────────────────┘${RESET}"
+    echo -e "${BOLD}${WHITE}  ┌──────────────────────────────────────────────────────────────┐${RESET}"
+    echo -e "${BOLD}${WHITE}  │                                                              │${RESET}"
+    echo -e "${BOLD}${CYAN}  │                ██████  ██████  ██████  ██████                │${RESET}"
+    echo -e "${BOLD}${CYAN}  │                ██  ██  ██  ██  ██  ██  ██  ██                │${RESET}"
+    echo -e "${BOLD}${CYAN}  │                ██████  ██  ██  ██████  ██  ██ dash           │${RESET}"
+    echo -e "${BOLD}${CYAN}  │                ██      ██  ██  ██      ██  ██                │${RESET}"
+    echo -e "${BOLD}${CYAN}  │                ██      ██████  ██      ██████                │${RESET}"
+    echo -e "${BOLD}${WHITE}  │                                                              │${RESET}"
+    echo -e "${DIM}${WHITE}  │                 Cyber Toy for Your Idle VPS                  │${RESET}"
+    echo -e "${DIM}${WHITE}  │                     鸡公头极简 VPS 面板                      │${RESET}"
+    echo -e "${DIM}${WHITE}  │                        ·  ·  ·  ·  ·                         │${RESET}"
+    echo -e "${DIM}${CYAN}  │                            ${VERSION}                            │${RESET}"
+    echo -e "${BOLD}${WHITE}  │                                                              │${RESET}"
+    echo -e "${BOLD}${WHITE}  └──────────────────────────────────────────────────────────────┘${RESET}"
     echo ""
 }
 
