@@ -5,7 +5,7 @@
 
 <br>
 
-<details open>
+<details>
 <summary><b>🇺🇸 English Version (Click to unfold/fold)</b></summary>
 <br>
 
@@ -140,7 +140,7 @@ Even a small potato server deserves a beautiful soul. Have fun!
 
 <br>
 
-<details>
+<details open>
 <summary><b>🇨🇳 简体中文版本 (点击展开/折叠)</b></summary>
 <br>
 
