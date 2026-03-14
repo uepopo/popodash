@@ -1786,6 +1786,35 @@ let isFrRunning = false; let frAbortController = null;
         }).catch(error => console.log('Uplink lost.'));
   }
 
+window.copyMtLog = function() {
+      const logEl = document.getElementById('mt-log');
+      if (!logEl) return;
+      const text = logEl.innerText || logEl.textContent || '';
+      const btn = document.querySelector('.mt-ctrl-btn.light');
+      function showFeedback() {
+          if (btn) {
+              const original = btn.innerText;
+              btn.innerText = 'コピー完了!';
+              setTimeout(() => { btn.innerText = original; }, 1500);
+          }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(showFeedback).catch(() => {
+              const el = document.createElement('textarea');
+              el.value = text; el.style.position = 'fixed'; el.style.opacity = '0';
+              document.body.appendChild(el); el.focus(); el.select();
+              document.execCommand('copy'); document.body.removeChild(el);
+              showFeedback();
+          });
+      } else {
+          const el = document.createElement('textarea');
+          el.value = text; el.style.position = 'fixed'; el.style.opacity = '0';
+          document.body.appendChild(el); el.focus(); el.select();
+          document.execCommand('copy'); document.body.removeChild(el);
+          showFeedback();
+      }
+  }
+
 window.copyInstallCmd = function() { 
       const text = `bash <(curl -sL "https://raw.githubusercontent.com/uepopo/popodash/main/install.sh?t=$RANDOM" | tr -d '\\r')`;
       const titleEl = document.querySelector('.install-title');
